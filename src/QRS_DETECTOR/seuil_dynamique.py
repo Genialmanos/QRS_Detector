@@ -10,8 +10,9 @@ def seuil_dynamique(sig, freq_sampling):
 def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
     last_max = -np.inf  # The most recent encountered maximum value
     last_max_pos = -1  # Position of the last_max in the array
-    peaks = []  # Detected peaks positions
-    peak_values = []  # Detected peaks values
+    peaks = [np.argmax(cleaned_ecg[:no_peak_distance])]  # Detected peaks positions
+    peak_values = [cleaned_ecg[peaks[0]]]  # Detected peaks values
+
     
     for i in range(len(cleaned_ecg)):
         current_value = cleaned_ecg[i]
@@ -24,21 +25,16 @@ def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
         # Check if the current value is less than half the last max
         # or if we are beyond the no_peak_distance from the last max
         if current_value <= last_max / 2 or (i - last_max_pos >= no_peak_distance):
-            if not peaks:
-                # If no peaks yet, just add the first one
+            # Check if the last peak is within the `distance` of the current peak
+            if last_max_pos - peaks[-1] < distance:
+                # If within the distance, choose the higher peak
+                if last_max > peak_values[-1]:
+                    peaks[-1] = last_max_pos
+                    peak_values[-1] = last_max
+            else:
+                # Otherwise, start a new peak group
                 peaks.append(last_max_pos)
                 peak_values.append(last_max)
-            else:
-                # Check if the last peak is within the `distance` of the current peak
-                if last_max_pos - peaks[-1] < distance:
-                    # If within the distance, choose the higher peak
-                    if last_max > peak_values[-1]:
-                        peaks[-1] = last_max_pos
-                        peak_values[-1] = last_max
-                else:
-                    # Otherwise, start a new peak group
-                    peaks.append(last_max_pos)
-                    peak_values.append(last_max)
             
             # Reset the last max after adding a peak
             last_max = current_value
