@@ -14,8 +14,7 @@ def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
     peak_values = [cleaned_ecg[peaks[0]]]  # Detected peaks values
 
     
-    for i in range(len(cleaned_ecg)):
-        current_value = cleaned_ecg[i]
+    for i, current_value in enumerate(cleaned_ecg)):
         
         # Update the most recent maximum if the current value is greater
         if current_value > last_max:
