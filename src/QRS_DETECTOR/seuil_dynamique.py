@@ -4,12 +4,12 @@ from scipy.signal import butter, filtfilt, medfilt, firwin, lfilter
 
 def seuil_dynamique(sig, freq_sampling):
     cleaned_ecg = preprocess_ecg(sig, freq_sampling, 5, 22, size_window = freq_sampling//10)
-    peaks = detect_peaks(cleaned_ecg, distance = int(freq_sampling * 0.33))
+    peaks = detect_peaks(cleaned_ecg, no_peak_distance = freq_sampling * 1.2, distance = int(freq_sampling * 0.33))
     qrs_indices = threshold_detection(cleaned_ecg, peaks, freq_sampling, initial_search_samples= int(freq_sampling * 0.83), long_peak_distance=int(freq_sampling*1.111))
 
     return qrs_indices
 
-def detect_peaks(cleaned_ecg, distance=0, no_peak_distance=222):
+def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
     last_max = -np.inf  # The most recent encountered maximum value
     last_max_pos = -1  # Position of the last_max in the array
     peaks = []  # Detected peaks positions
