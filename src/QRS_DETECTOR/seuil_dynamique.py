@@ -1,12 +1,10 @@
 import numpy as np
-from scipy.interpolate import CubicSpline
-from scipy.signal import butter, filtfilt, medfilt, firwin, lfilter
+from scipy.signal import butter, filtfilt
 
 def seuil_dynamique(sig, freq_sampling):
-    cleaned_ecg = preprocess_ecg(sig, freq_sampling, 5, 22, size_window = freq_sampling//10)
-    peaks = detect_peaks(cleaned_ecg, no_peak_distance = freq_sampling * 1.2, distance = int(freq_sampling * 0.33))
+    cleaned_ecg = preprocess_ecg(sig, freq_sampling, 5, 22, size_window = int( 0.1 * freq_sampling))
+    peaks = detect_peaks(cleaned_ecg, no_peak_distance= int(freq_sampling*0.65), distance = int(freq_sampling * 0.33))
     qrs_indices = threshold_detection(cleaned_ecg, peaks, freq_sampling, initial_search_samples= int(freq_sampling * 0.83), long_peak_distance=int(freq_sampling*1.111))
-
     return qrs_indices
 
 def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
@@ -25,23 +23,22 @@ def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
         
         # Check if the current value is less than half the last max
         # or if we are beyond the no_peak_distance from the last max
-        if current_value <= last_max / 2 or (i - last_max_pos >= no_peak_distance and last_max_pos != -1):
-            if last_max_pos != -1:
-                if not peaks:
-                    # If no peaks yet, just add the first one
+        if current_value <= last_max / 2 or (i - last_max_pos >= no_peak_distance):
+            if not peaks:
+                # If no peaks yet, just add the first one
+                peaks.append(last_max_pos)
+                peak_values.append(last_max)
+            else:
+                # Check if the last peak is within the `distance` of the current peak
+                if last_max_pos - peaks[-1] < distance:
+                    # If within the distance, choose the higher peak
+                    if last_max > peak_values[-1]:
+                        peaks[-1] = last_max_pos
+                        peak_values[-1] = last_max
+                else:
+                    # Otherwise, start a new peak group
                     peaks.append(last_max_pos)
                     peak_values.append(last_max)
-                else:
-                    # Check if the last peak is within the `distance` of the current peak
-                    if last_max_pos - peaks[-1] < distance:
-                        # If within the distance, choose the higher peak
-                        if last_max > peak_values[-1]:
-                            peaks[-1] = last_max_pos
-                            peak_values[-1] = last_max
-                    else:
-                        # Otherwise, start a new peak group
-                        peaks.append(last_max_pos)
-                        peak_values.append(last_max)
             
             # Reset the last max after adding a peak
             last_max = current_value
@@ -136,4 +133,3 @@ def preprocess_ecg(data, fs, high, low, size_window):
     signal = squaring(signal)
     signal = moving_window_integration(signal, size_window)
     return signal
-
