@@ -2,10 +2,11 @@
 
 **QRS_Detector** is a Python module for detecting QRS complexes on an electrocardiogram (ECG) and distributed under the Eclipse Public License (EPL).
 
-The development of this library started in May 2024 as part of [Aura Healthcare](https://www.aura.healthcare) project, in [OCTO Technology](https://www.octo.com/fr) R&D team.
+The development of this library started in February 2024 as part of [Aura Healthcare](https://www.aura.healthcare) project, in [OCTO Technology](https://www.octo.com/fr) R&D team.
 
 
 ![alt text](https://github.com/Genialmanos/QRS_Detector/blob/main/figures/Detection.png)
+![alt text](https://github.com/Genialmanos/QRS_Detector/blob/main/figures/Detection2.png)
 
 
 **Website** : https://www.aura.healthcare
@@ -53,6 +54,12 @@ qrs = qrs_detector(signal, frequence_sampling)
 ### Plot functions
 
 Ajout d'une fonction pour plot ?
+
+## Quality control and performances
+
+vs hamilton avec github de marysa
+renvoie vers un autre readme + détaillé
+
 
 ## References
 
