@@ -14,8 +14,8 @@ def detect_peaks(cleaned_ecg, no_peak_distance, distance=0):
     peak_values = [cleaned_ecg[peaks[0]]]  # Detected peaks values
 
     
-    for i, current_value in enumerate(cleaned_ecg)):
-        
+    for i, current_value in enumerate(cleaned_ecg):
+       
         # Update the most recent maximum if the current value is greater
         if current_value > last_max:
             last_max = current_value
@@ -55,7 +55,7 @@ def threshold_detection(cleaned_ecg, peaks, fs, initial_search_samples=300, long
     last_qrs_time = 0
     min_distance = int(fs * 0.12)
     
-    for peak in peaks:
+    for i, peak in enumerate(peaks):
         peak_value = cleaned_ecg[peak]
         
         if peak_value > THRESHOLD:
@@ -80,7 +80,7 @@ def threshold_detection(cleaned_ecg, peaks, fs, initial_search_samples=300, long
         if peak - last_qrs_time > long_peak_distance:
             SPK *= 0.5
             THRESHOLD = 0.25 * SPK + 0.75 * NPK
-            for lookback_peak in peaks:
+            for lookback_peak in peaks[i-5:i+1]:
                 if last_qrs_time < lookback_peak < peak:
                     if cleaned_ecg[lookback_peak] > THRESHOLD:
                         qrs_peaks.append(lookback_peak)
