@@ -57,8 +57,7 @@ Ajout d'une fonction pour plot ?
 
 ## Quality control and performances
 
-vs hamilton avec github de marysa
-renvoie vers un autre readme + détaillé
+#TODO
 
 
 ## References
