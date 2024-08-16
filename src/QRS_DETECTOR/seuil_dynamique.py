@@ -80,7 +80,7 @@ def threshold_detection(cleaned_ecg, peaks, fs, initial_search_samples=300, long
         if peak - last_qrs_time > long_peak_distance:
             SPK *= 0.5
             THRESHOLD = 0.25 * SPK + 0.75 * NPK
-            for lookback_peak in peaks[i-5:i+1]:
+            for lookback_peak in peaks[i:i-5:-1]:
                 if last_qrs_time < lookback_peak < peak:
                     if cleaned_ecg[lookback_peak] > THRESHOLD:
                         qrs_peaks.append(lookback_peak)
