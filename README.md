@@ -35,6 +35,7 @@ you can also clone the repository:
 - Python (>= 3.6)
 - numpy >= 1.16.0
 - scipy >= 1.2.0
+- matplotlib >= 3.3.4
 
 Note: The package can be used with all Python versions from 3.6 to latest version (currently Python 3.11).
 
@@ -53,11 +54,28 @@ qrs = qrs_detector(signal, frequence_sampling)
 
 ### Plot functions
 
-Ajout d'une fonction pour plot ?
+```python
+from Print_QRS import print_signal_with_qrs
+# Basic usage
+print_signal_with_qrs(signal, qrs_predicted)
+
+# Full usage with all parameters
+print_signal_with_qrs(signal, qrs_predicted, true_qrs=labeled_qrs, mini=10000, maxi=15000, description="QRS between frames 10000 and 15000")
+```
+Parameters:
+
+- signal (list or numpy array): The 1D array of signal values (e.g., ECG signal data).
+- qrs_predicted (list of integers): Indices of the signal where QRS complexes are predicted.
+- true_qrs (list of integers, optional): Indices of the signal where QRS complexes are actually located (true labels). Default is an empty list.
+- mini (int, optional): The starting index of the segment of the signal to be plotted. Default is 0.
+- maxi (int, optional): The ending index of the segment of the signal to be plotted. If set to 1, the function plots up to the end of the signal. Default is 1.
+- description (str, optional): A description or title for the plot. Default is an empty string.
 
 ## Quality control and performances
 
-#TODO
+[This algorithm uses a benchmark previously made by Aura.](https://github.com/ecg-tools/benchmark-qrs-detectors)
+ It compares different public libraries in terms of accuracy on 5 public datasets. This algorithm achieves better results in terms of accuracy, as well as efficiency. Compared with the best of the algorithms tested, this algorithm achieves better results with an average time 5 times shorter. 
+TODO
 
 
 ## References
