@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fast-qrs-detector"
-version = "0.1.1"
+version = "0.1.2"
 description = "Package for detecting QRS in a ECG signal."
 authors = [{name = "Fournier Jean-Charles", email = "jean-charles.fournier@hotmail.com"}]
 license = {file = "LICENSE"}
