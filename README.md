@@ -1,6 +1,6 @@
-# QRS_Detector
+# Fast QRS detector
 
-**QRS_Detector** is a Python module for detecting QRS complexes on an electrocardiogram (ECG) and distributed under the Eclipse Public License (EPL).
+**Fast QRS detector** is a Python module for detecting QRS complexes on an electrocardiogram (ECG) and distributed under the Eclipse Public License (EPL).
 
 The development of this library started in February 2024 as part of [Aura Healthcare](https://www.aura.healthcare) project, in [OCTO Technology](https://www.octo.com/fr) R&D team.
 
@@ -13,25 +13,20 @@ The development of this library started in February 2024 as part of [Aura Health
 
 **Github** : https://github.com/Aura-healthcare
 
-**Version** : 1.0.0
+**Version** : 0.1.1
 
 
 ## Installation / Prerequisites
 
 #### User installation
 
-The easiest way to install QRS_Detector is using ``pip`` :
+The easiest way to install fast QRS detector is using ``pip`` :
 
-    $ pip install QRS_Detector
-
-you can also clone the repository:
-
-    $ git clone https://github.com/Genialmanos/QRS_Detector.git
-    $ python setup.py install
+    $ pip install fast_qrs_detector
 
 #### Dependencies
 
-**QRS_Detector** requires the following:
+**Fast QRS detector** requires the following:
 - Python (>= 3.6)
 - numpy >= 1.16.0
 - scipy >= 1.2.0
@@ -42,12 +37,12 @@ Note: The package can be used with all Python versions from 3.6 to latest versio
 
 ## Getting started
 
-### QRS detection
+### Fast QRS detector
 
 This package provides methods to detect QRS complexes on an electrocardiogram (ECG) like MIT-BIH-Arrhythmia.
 
 ```python
-from QRS_Detector import qrs_detector
+from fast_qrs_detector import qrs_detector
 
 qrs = qrs_detector(signal, frequence_sampling)
 ```
@@ -55,7 +50,7 @@ qrs = qrs_detector(signal, frequence_sampling)
 ### Plot functions
 
 ```python
-from Print_QRS import print_signal_with_qrs
+from fast_qrs_detector import print_signal_with_qrs
 # Basic usage
 print_signal_with_qrs(signal, qrs_predicted)
 

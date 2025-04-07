@@ -3,8 +3,8 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "QRS_Detector"
-version = "0.1.0"
+name = "fast-qrs-detector"
+version = "0.1.1"
 description = "Package for detecting QRS in a ECG signal."
 authors = [{name = "Fournier Jean-Charles", email = "jean-charles.fournier@hotmail.com"}]
 license = {file = "LICENSE"}

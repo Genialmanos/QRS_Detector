@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/fast_qrs_detector/__init__.py
+src/fast_qrs_detector/fast_qrs_detector.py
+src/fast_qrs_detector/print_qrs.py
+src/fast_qrs_detector.egg-info/PKG-INFO
+src/fast_qrs_detector.egg-info/SOURCES.txt
+src/fast_qrs_detector.egg-info/dependency_links.txt
+src/fast_qrs_detector.egg-info/top_level.txt
