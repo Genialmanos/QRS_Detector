@@ -69,8 +69,7 @@ Parameters:
 ## Quality control and performances
 
 [This algorithm uses a benchmark previously made by Aura.](https://github.com/ecg-tools/benchmark-qrs-detectors)
- It compares different public libraries in terms of accuracy on 5 public datasets. This algorithm achieves better results in terms of accuracy, as well as efficiency. Compared with the best of the algorithms tested, this algorithm achieves better results with an average time 5 times shorter. 
-TODO
+ It compares different public libraries in terms of accuracy on 5 public datasets. This algorithm achieves better results in terms of accuracy, as well as efficiency. Compared with the best of the algorithms tested, this algorithm achieves better results with an average time 5 times shorter. [More details here.](README2.md)
 
 
 ## References
@@ -85,7 +84,7 @@ Here are the main references used to made this algorithm:
 
 > M. Šarlija, F. Jurišić and S. Popović (2017). "A convolutional neural network based approach to QRS detection," Proceedings of the 10th International Symposium on Image and Signal Processing and Analysis,121-125 https://doi.org/10.1109/ISPA.2017.8073581 
 
-## Authors
+## Author
 
 **Jean-Charles Fournier** - (https://github.com/Genialmanos)
 
