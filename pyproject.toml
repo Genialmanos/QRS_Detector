@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fast-qrs-detector"
+version = "0.1.2"
+description = "Package for detecting QRS in a ECG signal."
+authors = [{name = "Fournier Jean-Charles", email = "jean-charles.fournier@hotmail.com"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.6"
+
+[project.urls]
+homepage = "https://www.aura.healthcare"
+repository = "https://github.com/Genialmanos/QRS_Detector"
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+
+[tool.isort]
+profile = "black"
