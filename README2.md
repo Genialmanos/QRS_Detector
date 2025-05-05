@@ -63,7 +63,10 @@ The initial F1-scores (with 100ms tolerance) for each algorithm across the datas
 
 ### 4.2 Execution Time
 
-Execution times were measured on a machine with an 11th Gen Intel® Core™ i7-1185G7 × 8 processor, 32 GiB RAM, and Mesa Intel® Xe Graphics. The total execution time (in seconds) across datasets is shown below. `time / long` excludes the time-consuming 'long term' dataset for a focused comparison.
+Execution times were measured on a machine with an 11th Gen Intel® Core™ i7-1185G7 × 8 processor, 32 GiB RAM, and Mesa Intel® Xe Graphics. The total execution time (in seconds) across datasets is shown below.
+**Note:** These timings reflect the core algorithm processing on raw numerical signal data (similar to NumPy array input). Additional overhead may be introduced when using Pandas DataFrames, especially with NaN interpolation and segmentation features activated.
+
+`time / long` excludes the time-consuming 'long term' dataset for a focused comparison.
 
 | Algo              | Arrhythmia | Long term | n_00 | n_06 | n_12 | n_18 | n_24 | Supraventricular | European-st | time total | time / long |
 |:-----------------:|:---------: |:---------:|:----:|:----:|:----:|:----:|:----:| :--------------: |:-----------:|:----------:|:-----------:|

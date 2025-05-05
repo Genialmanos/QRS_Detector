@@ -13,7 +13,7 @@ The development of this library started in February 2024 as part of [Aura Health
 
 **Github** : https://github.com/Aura-healthcare
 
-**Version** : 0.1.2
+**Version** : 0.2.0
 
 
 ## Installation / Prerequisites
@@ -28,43 +28,125 @@ The easiest way to install fast QRS detector is using ``pip`` :
 
 **Fast QRS detector** requires the following:
 - Python (>= 3.6)
-- numpy >= 1.16.0
-- scipy >= 1.2.0
+- numpy >= 1.18.0
+- scipy >= 1.4.0
+- pandas >= 1.0.0
 - matplotlib >= 3.3.4
 
-Note: The package can be used with all Python versions from 3.6 to latest version (currently Python 3.11).
+Note: The package is tested with Python versions from 3.6 up to 3.11.
 
 
 ## Getting started
 
-### Fast QRS detector
+### `qrs_detector` Function
 
-This package provides methods to detect QRS complexes on an electrocardiogram (ECG) like MIT-BIH-Arrhythmia.
+This package provides the `qrs_detector` function to detect QRS complexes on an electrocardiogram (ECG).
 
 ```python
 from fast_qrs_detector import qrs_detector
+import numpy as np
+import pandas as pd
 
-qrs = qrs_detector(signal, frequence_sampling)
+# Basic usage with NumPy array (returns indices)
+signal_array = np.random.rand(10000) # Replace with your actual ECG data
+sampling_freq = 360 # Hz
+qrs_indices = qrs_detector(signal_array, sampling_freq)
+
+# Usage with 1-column Pandas DataFrame (returns indices)
+signal_df_1col = pd.DataFrame({'ecg': signal_array})
+qrs_indices_df1 = qrs_detector(signal_df_1col, sampling_freq)
+
+# Usage with 2-column Pandas DataFrame (signal + timestamps)
+# Create example timestamps (e.g., starting from a specific time)
+timestamps = pd.date_range('2024-01-01', periods=len(signal_array), freq=pd.Timedelta(seconds=1/sampling_freq))
+signal_df_2col = pd.DataFrame({'time': timestamps, 'voltage': signal_array})
+
+# Returns timestamps corresponding to QRS peaks
+qrs_timestamps = qrs_detector(signal_df_2col, sampling_freq)
+
+# Usage with NaN interpolation (for 2-column DataFrame only)
+signal_with_nans = signal_df_2col.copy()
+# Introduce some NaNs
+signal_with_nans.loc[100:105, 'voltage'] = np.nan # Short gap
+signal_with_nans.loc[500:600, 'voltage'] = np.nan # Long gap
+
+# Interpolate gaps up to 10 samples, split signal if gap > 10
+# Ignore resulting segments shorter than 60 samples
+qrs_ts_interpolated = qrs_detector(signal_with_nans,
+                                   sampling_freq,
+                                   max_nan_interpolation=10,
+                                   min_segment_len=60)
+
 ```
+
+**Function Signature:**
+
+```python
+fast_qrs_detector.qrs_detector(signal_data, freq_sampling: int, max_nan_interpolation=0, min_segment_len=50)
+```
+
+**Parameters:**
+
+- `signal_data` (`numpy.ndarray` | `pandas.DataFrame`): The ECG signal.
+    - If `numpy.ndarray`: A 1D array of signal values. Must not contain NaNs.
+    - If `pandas.DataFrame`: Can have one or two columns.
+        - **One column:** Must be numeric (signal values). Must not contain NaNs.
+        - **Two columns:** One column must be numeric (signal values), and the other must be datetime-like (`datetime64` or `timedelta64`). NaNs in the signal column can be handled via `max_nan_interpolation`.
+- `freq_sampling` (`int`): The sampling frequency of the signal in Hz.
+- `max_nan_interpolation` (`int`, optional): **Only for 2-column DataFrame input.** Max consecutive NaNs in the signal column to interpolate linearly. Gaps larger than this will cause the signal to be split into segments. Defaults to 0 (no interpolation).
+- `min_segment_len` (`int`, optional): **Only for 2-column DataFrame input.** The minimum number of data points required in a segment (after splitting by large NaN gaps) for it to be processed. Defaults to 50.
+
+**Returns:**
+
+- `numpy.ndarray`: If input was a NumPy array or 1-column DataFrame. Contains the integer indices of the detected QRS peaks.
+- `pandas.Index`: If input was a 2-column DataFrame. Contains the timestamp values corresponding to the detected QRS peaks.
+
 
 ### Plot functions
 
 ```python
+import matplotlib.pyplot as plt
 from fast_qrs_detector import print_signal_with_qrs
-# Basic usage
-print_signal_with_qrs(signal, qrs_predicted)
 
-# Full usage with all parameters
-print_signal_with_qrs(signal, qrs_predicted, true_qrs=labeled_qrs, mini=10000, maxi=15000, description="QRS between frames 10000 and 15000")
+# Assuming you have:
+# signal_data: Your ECG data (NumPy array or DataFrame)
+# qrs_results: The output from qrs_detector (indices or timestamps)
+
+# Basic usage (plots a segment and marks QRS)
+print_signal_with_qrs(signal_data, qrs_predicted=qrs_results, mini=10000, maxi=15000)
+
+# Show the plot (necessary in scripts, often automatic in Jupyter)
+plt.show()
+
+# Example with true labels and timestamps (if signal_data is a 2-col DataFrame)
+# true_qrs_timestamps = ... # Load your ground truth timestamps
+# print_signal_with_qrs(signal_data,
+#                       qrs_predicted=qrs_results, # Should be timestamps
+#                       true_qrs=true_qrs_timestamps, # Should be timestamps
+#                       mini='2024-07-17 10:05:00',
+#                       maxi='2024-07-17 10:05:10',
+#                       description="ECG segment with timestamps")
+# plt.show()
 ```
-Parameters:
+**Function Signature & Parameters:**
 
-- signal (list or numpy array): The 1D array of signal values (e.g., ECG signal data).
-- qrs_predicted (list of integers): Indices of the signal where QRS complexes are predicted.
-- true_qrs (list of integers, optional): Indices of the signal where QRS complexes are actually located (true labels). Default is an empty list.
-- mini (int, optional): The starting index of the segment of the signal to be plotted. Default is 0.
-- maxi (int, optional): The ending index of the segment of the signal to be plotted. If set to 1, the function plots up to the end of the signal. Default is 1.
-- description (str, optional): A description or title for the plot. Default is an empty string.
+```python
+fast_qrs_detector.print_signal_with_qrs(signal_data, qrs_predicted, true_qrs=None, mini=0, maxi=None, description="")
+```
+
+- `signal_data` (`numpy.ndarray` | `pandas.DataFrame`): The ECG signal data (see `qrs_detector` for format details).
+- `qrs_predicted` (list-like | `pd.Index`): Predicted QRS locations (indices or timestamps, matching `signal_data` type).
+- `true_qrs` (list-like | `pd.Index`, optional): True QRS locations. Defaults to `None`.
+- `mini` (int | str | `pd.Timestamp` | `datetime`, optional): Start index or timestamp for plotting. Defaults to 0.
+- `maxi` (int | str | `pd.Timestamp` | `datetime`, optional): End index or timestamp for plotting. Defaults to end of signal.
+- `description` (str, optional): Title for the plot. Defaults to "".
+
+**Important Note on Displaying Plots:**
+
+This function *creates* the plot but does not automatically display it by calling `plt.show()`. This gives you flexibility:
+- In **Jupyter Notebooks** with `%matplotlib inline`, the plot usually appears automatically after the cell runs.
+- In **Python scripts** or other environments (or if the plot doesn't appear automatically in Jupyter), you need to explicitly call `matplotlib.pyplot.show()` *after* calling `print_signal_with_qrs` to display the figure.
+- This design allows you to add more elements to the plot (e.g., `plt.title(...)`, `plt.xlabel(...)`) or save it (`plt.savefig(...)`) *before* displaying it.
 
 ## Quality control and performances
 
