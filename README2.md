@@ -101,8 +101,8 @@ Further tuning of parameters was performed on the selected candidates. The "Dyna
 
 | Algo                    | Arrhythmia | Long term |  n_00 |  n_06 |  n_12 |  n_18 |  n_24 | Supraventricular | European-st | F1 mean   |
 |:-----------------------:|:---------: |:---------:|:-----:|:-----:|:-----:|:-----:|:-----:| :--------------: |:-----------:|:---------:|
-| **Dynamic Threshold +**|  **99.11** | 99.22 | 79.40 | 91.68 | 98.85 | 99.92 | 99.95 |      **99.50**   |   **99.07** |**98.172** |
-| Dynamic Threshold       |      98.97 |     99.23 | 77.00 | 90.65 | 98.75 | 99.94 | 99.95 |            99.60 |       99.17 |  98.046   |
+| **Dynamic Threshold +**|  **99.11** | 99.22 | 79.40 | 91.68 | 98.85 | 99.92 | 99.95 |      **99.50**   |   99.07 |**98.172** |
+| Dynamic Threshold       |      98.97 |     99.23 | 77.00 | 90.65 | 98.75 | 99.94 | 99.95 |            99.60 |       **99.17** |  98.046   |
 | Hamilton                |      98.94 |     **99.45** | **79.80** | **92.94** | **99.17** | **99.96** | **99.99** |            98.85 |       97.71 |  97.864   |
 
 **Final Analysis:** The optimized **Dynamic Threshold algorithm** demonstrated the best overall F1-score performance across the diverse datasets while maintaining significantly better computational efficiency compared to the original Hamilton benchmark.
